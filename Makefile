@@ -50,8 +50,6 @@ busybox:
 	$(MAKE) -C $(shell pwd)/../external/busybox ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- O=$(shell pwd)/../out/external/busybox install CONFIG_PREFIX=$(shell pwd)/../out/external/busybox/_build_
 
 mkboot:
-	rm -r $(shell pwd)/../out/build/boot/*
-
 	mkdir -p $(shell pwd)/../out/build/boot/EFI/Boot $(shell pwd)/../out/build/boot/EFI/Linux
 	mkdir -p $(shell pwd)/../out/build/boot/Limine/dtbs
 
@@ -66,8 +64,6 @@ mkboot:
 	cp -r $(shell pwd)/../assets/boot.scr $(shell pwd)/../out/build/boot/boot.scr
 
 mkroot:
-	rm -r $(shell pwd)/../out/build/root/*
-
 	mkdir -p $(shell pwd)/../out/build/root/dev $(shell pwd)/../out/build/root/etc $(shell pwd)/../out/build/root/proc
 	mkdir -p $(shell pwd)/../out/build/root/sys $(shell pwd)/../out/build/root/tmp $(shell pwd)/../out/build/root/usr
 	mkdir -p $(shell pwd)/../out/build/root/usr/bin $(shell pwd)/../out/build/root/usr/sbin
