@@ -2,3 +2,12 @@
 
 export ARCH=riscv
 export CROSS_COMPILE=riscv64-linux-gnu-
+
+export CC_FOR_TARGET=${CROSS_COMPILE}gcc
+export LD_FOR_TARGET=${CROSS_COMPILE}ld
+
+export OBJCOPY_FOR_TARGET=${CROSS_COMPILE}objcopy
+export OBJDUMP_FOR_TARGET=${CROSS_COMPILE}objdump
+export READELF_FOR_TARGET=${CROSS_COMPILE}readelf
+export AR_FOR_TARGET=${CROSS_COMPILE}ar
+export RANLIB_FOR_TARGET=${CROSS_COMPILE}ranlib
