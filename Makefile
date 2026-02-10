@@ -82,6 +82,7 @@ mkroot:
 
 	rm -r $(shell pwd)/../out/build/root/usr/lib/modules/6.12.5+/build
 	chmod 755 $(shell pwd)/../out/build/root/usr/lib/*
+	chmod 755 $(shell pwd)/../out/build/root/etc/init.d/rcS
 
 	cd $(shell pwd)/../out/build/root && ln -sf usr/bin bin
 	cd $(shell pwd)/../out/build/root && ln -sf usr/sbin sbin
