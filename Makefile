@@ -36,8 +36,8 @@ kernel:
 	$(MAKE) -C $(shell pwd)/../kernel/linux/ O=$(shell pwd)/../out/kernel/linux headers_install INSTALL_HDR_PATH=$(shell pwd)/../out/kernel/linux/_include_
 
 glibc:
-	cd $(shell pwd)/../out/external/glibc && $(shell pwd)/../external/glibc/configure --host=riscv64-linux-gnu --prefix=/usr \
-            --with-headers=$(shell pwd)/../out/kernel/linux/_include_/include --disable-werror libc_cv_slibdir=/lib --disable-test-werror CXX="riscv64-linux-gnu-gcc -nostdlib"
+	cd $(shell pwd)/../out/external/glibc && $(shell pwd)/../external/glibc/configure --build=x86_64-linux-gnu --host=riscv64-linux-gnu --prefix=/usr \
+            --with-headers=$(shell pwd)/../out/kernel/linux/_include_/include --disable-werror --disable-test-werror --without-selinux libc_cv_slibdir=/lib
 	$(MAKE) -C $(shell pwd)/../out/external/glibc -j$(HALF_THREADS)
 	$(MAKE) -C $(shell pwd)/../out/external/glibc install install_root=$(shell pwd)/../out/external/glibc/_build_
 	cp -r $(shell pwd)/../out/kernel/linux/_include_/include/* $(shell pwd)/../out/external/glibc/_build_/usr/include/
