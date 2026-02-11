@@ -1,10 +1,15 @@
+.PHONY: all clean build boot kernel glibc gcc-libs busybox application mkboot mkroot
+
 THREADS := $(shell nproc)
 HALF_THREADS := $(shell expr $(THREADS) / 2)
 ifeq ($(HALF_THREADS), 0)
     HALF_THREADS := 1
 endif
 
-all: build boot kernel glibc gcc-libs busybox mkboot mkroot
+all: build boot kernel glibc gcc-libs busybox application mkboot mkroot
+
+clean:
+	rm -rf $(shell pwd)/../out
 
 build:
 	mkdir -p $(shell pwd)/../out/build/boot
@@ -49,6 +54,9 @@ busybox:
 	$(MAKE) -C $(shell pwd)/../external/busybox ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- O=$(shell pwd)/../out/external/busybox -j$(HALF_THREADS)
 	$(MAKE) -C $(shell pwd)/../external/busybox ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- O=$(shell pwd)/../out/external/busybox install CONFIG_PREFIX=$(shell pwd)/../out/external/busybox/_build_
 
+application:
+	$(MAKE) -C $(shell pwd)/../external/application OUT=$(shell pwd)/../out/external/application
+
 mkboot:
 	mkdir -p $(shell pwd)/../out/build/boot/EFI/Boot $(shell pwd)/../out/build/boot/EFI/Linux
 	mkdir -p $(shell pwd)/../out/build/boot/Limine/dtbs
@@ -68,7 +76,7 @@ mkroot:
 	mkdir -p $(shell pwd)/../out/build/root/sys $(shell pwd)/../out/build/root/tmp $(shell pwd)/../out/build/root/usr
 	mkdir -p $(shell pwd)/../out/build/root/usr/bin $(shell pwd)/../out/build/root/usr/sbin
 	mkdir -p $(shell pwd)/../out/build/root/usr/lib $(shell pwd)/../out/build/root/usr/lib64
-	mkdir -p $(shell pwd)/../out/build/root/usr/lib/modules
+	mkdir -p $(shell pwd)/../out/build/root/usr/lib/modules $(shell pwd)/../out/build/root/opt
 
 	cp -r $(shell pwd)/../out/external/busybox/_build_/bin/* $(shell pwd)/../out/build/root/usr/bin
 	cp -r $(shell pwd)/../out/external/busybox/_build_/usr/bin/* $(shell pwd)/../out/build/root/usr/bin
@@ -79,6 +87,7 @@ mkroot:
 	cp -r $(shell pwd)/../out/external/gcc/_build_/usr/local/riscv64-linux-gnu/lib/libstdc++.so.6.0.33 $(shell pwd)/../out/build/root/usr/lib/libstdc++.so.6
 	cp -r $(shell pwd)/../out/kernel/linux/_modules_/lib/modules/* $(shell pwd)/../out/build/root/usr/lib/modules
 	cp -r $(shell pwd)/../assets/config/* $(shell pwd)/../out/build/root/etc
+	cp -r $(shell pwd)/../out/external/application/* $(shell pwd)/../out/build/root/opt
 
 	rm -r $(shell pwd)/../out/build/root/usr/lib/modules/6.12.5+/build
 	chmod 755 $(shell pwd)/../out/build/root/usr/lib/*
